@@ -149,6 +149,7 @@ const Auth = () => {
               <Button
                 onClick={() => HandleRegistration("signup")}
                 disabled={isLoading}
+                variant={"outline"}
               >
                 {isLoading ? (
                   <>
@@ -221,6 +222,7 @@ const Auth = () => {
               <Button
                 onClick={() => HandleRegistration("login")}
                 disabled={isLoading}
+                variant={"outline"}
               >
                 {isLoading ? (
                   <>

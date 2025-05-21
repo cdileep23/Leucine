@@ -29,7 +29,7 @@ const Body = () => {
         navigate("/");
       }
     } catch (error) {
-      
+      console.log(error)
         navigate("/auth");
     
     }

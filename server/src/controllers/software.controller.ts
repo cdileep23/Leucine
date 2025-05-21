@@ -51,4 +51,20 @@ console.log(req.body)
       });
     }
   }
+  static async getSoftwares(req:AuthenticatedRequest,res:Response){
+    try {
+      const softwareRepo = AppDataSource.getRepository(softwareEntity);
+      const softwares = await softwareRepo.find({});
+       return res.status(200).json({
+         success: true,
+         data: softwares,
+       });
+    } catch (error) {
+      console.error("Error fetching Softwares:", error);
+      return res.status(500).json({
+        success: false,
+        error: "Internal server error",
+      });
+    }
+  }
 }

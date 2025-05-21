@@ -1,14 +1,6 @@
 import { Menu, LogOutIcon } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Sheet,
@@ -53,9 +45,56 @@ const Navbar = () => {
           <h1 className="font-extrabold text-xl md:text-2xl">Leucine</h1>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8 pr-8">
+        <div className="hidden md:flex items-center gap-6 pr-8">
           {user?.username && (
-            <UserMenu HandleLogout={HandleLogout} user={user} />
+            <>
+              <Avatar>
+                <AvatarImage
+                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${user?.username}`}
+                  alt={user?.username}
+                />
+                <AvatarFallback>
+                  {user?.username?.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="text-left">
+                <p className="font-medium text-sm">{user?.username}</p>
+                <Badge variant="outline" className="text-xs">
+                  Role: {user?.role}
+                </Badge>
+              </div>
+              {user?.role === "Employee" && (
+                <Link
+                  to="/request-access"
+                  className="text-sm hover:text-indigo-600"
+                >
+                  Request Access
+                </Link>
+              )}
+              {["Admin", "Manager"].includes(user?.role) && (
+                <Link
+                  to="/pending-requests"
+                  className="text-sm hover:text-indigo-600"
+                >
+                  Pending Requests
+                </Link>
+              )}
+              {user?.role === "Admin" && (
+                <Link
+                  to="/create-software"
+                  className="text-sm hover:text-indigo-600"
+                >
+                  Create Software
+                </Link>
+              )}
+              <button
+                onClick={HandleLogout}
+                className="flex items-center text-red-600 text-sm hover:text-red-800"
+              >
+                <LogOutIcon size={14} className="mr-2" />
+                Log Out
+              </button>
+            </>
           )}
         </div>
 
@@ -67,57 +106,6 @@ const Navbar = () => {
   );
 };
 
-const UserMenu = ({ HandleLogout, user }) => {
-  const [open, setOpen] = useState(false);
-
-  const handleDropdownItemClick = (callback) => {
-    setOpen(false);
-    if (callback) callback();
-  };
-
-  return (
-    <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger>
-        <div className="flex items-center gap-2">
-          <Avatar>
-            <AvatarImage
-              src={`https://api.dicebear.com/6.x/initials/svg?seed=${user?.username}`}
-              alt={user?.username}
-            />
-            <AvatarFallback>
-              {user?.username?.charAt(0).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="hidden lg:block text-left">
-            <p className="font-medium text-sm">{user?.username}</p>
-            <Badge variant="outline" className="text-xs">
-              Role: {user?.role}
-            </Badge>
-          </div>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-       
-        <DropdownMenuSeparator />
-        <Link to="/my-conversions" onClick={() => setOpen(false)}>
-          <DropdownMenuItem>My Conversions</DropdownMenuItem>
-        </Link>
-        <Link to="/profile" onClick={() => setOpen(false)}>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-        </Link>
-        <DropdownMenuItem
-          onClick={() => handleDropdownItemClick(HandleLogout)}
-          className="flex items-center text-red-600"
-        >
-          <LogOutIcon size={14} className="mr-2" />
-          Log Out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
-
-
 const MobileMenu = ({ user, HandleLogout }) => (
   <Sheet>
     <SheetTrigger asChild>
@@ -127,7 +115,7 @@ const MobileMenu = ({ user, HandleLogout }) => (
     </SheetTrigger>
     <SheetContent side="right" className="bg-gray-50 border-l">
       <SheetHeader className="mb-2">
-        <SheetTitle>Leucine </SheetTitle>
+        <SheetTitle>Leucine</SheetTitle>
       </SheetHeader>
       <div className="flex flex-col gap-6 mx-10">
         {user?.username && (
@@ -152,18 +140,30 @@ const MobileMenu = ({ user, HandleLogout }) => (
               </div>
             </div>
             <nav className="flex flex-col space-y-2">
-              <Link
-                to="/my-conversions"
-                className="py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
-              >
-                My Conversions
-              </Link>
-              <Link
-                to="/profile"
-                className="py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
-              >
-                Profile
-              </Link>
+              {user?.role === "Employee" && (
+                <Link
+                  to="/request-access"
+                  className="py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+                >
+                  Request Access
+                </Link>
+              )}
+              {["Admin", "Manager"].includes(user?.role) && (
+                <Link
+                  to="/pending-requests"
+                  className="py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+                >
+                  Pending Requests
+                </Link>
+              )}
+              {user?.role === "Admin" && (
+                <Link
+                  to="/create-software"
+                  className="py-2 px-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"
+                >
+                  Create Software
+                </Link>
+              )}
               <button
                 onClick={HandleLogout}
                 className="text-left py-2 px-3 flex items-center gap-3 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors text-red-500"

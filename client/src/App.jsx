@@ -4,6 +4,9 @@ import Body from './components/custom/Body'
 import Home from './pages/Home'
 import Auth from "./pages/Auth";
 import { Toaster } from 'sonner';
+import RequestAccess from './pages/RequestAccess';
+import PendingRequest from './pages/PendingRequest';
+import CreateSoftware from './pages/CreateSoftware';
 const App = () => {
   const app = createBrowserRouter([
     {
@@ -15,8 +18,21 @@ const App = () => {
           element: <Home />,
         },
         {
-          path:'/auth',
-          element:<Auth/>
+          path: "/auth",
+          element: <Auth />,
+        },
+        {
+          path: "/request-access",
+          element: <RequestAccess />,
+        },
+        {
+          path: "/pending-requests"
+          ,
+          element:<PendingRequest/>
+        },
+        {
+          path:"create-software",
+          element:<CreateSoftware/>
         }
       ],
     },
