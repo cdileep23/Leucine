@@ -53,7 +53,7 @@ const PendingRequest = () => {
 
       if (response.data.success) {
         toast.success(`Request has been ${status.toLowerCase()}`);
-        await fetchRequests(); // Refresh the list
+        await fetchRequests();
       } else {
         toast.error(
           response.data.error || `Failed to ${status.toLowerCase()} request`
@@ -120,11 +120,9 @@ const PendingRequest = () => {
                           }
                           disabled={processing[request.id]}
                         >
-                          {processing[request.id] ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            "Approve"
-                          )}
+                          
+                            Approve
+                       
                         </Button>
                         <Button
                           size="sm"
@@ -134,11 +132,9 @@ const PendingRequest = () => {
                           }
                           disabled={processing[request.id]}
                         >
-                          {processing[request.id] ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : (
-                            "Reject"
-                          )}
+                         
+                            Reject
+                        
                         </Button>
                       </>
                     )}

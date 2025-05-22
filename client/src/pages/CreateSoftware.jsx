@@ -16,6 +16,7 @@ const CreateSoftware = () => {
     description: "",
     accessLevels: [],
   });
+  const [isloading,setIsLoading]=useState(false)
 
   const accessOptions = ["Read", "Write", "Admin"];
 
@@ -37,6 +38,7 @@ const CreateSoftware = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true)
 console.log(formData)
     if (
       !formData.name ||
@@ -69,6 +71,7 @@ console.log(formData)
         description: "",
         accessLevels: [],
       });
+      setIsLoading(false)
     }
   };
 
@@ -114,8 +117,8 @@ console.log(formData)
           </div>
         </div>
 
-        <Button type="submit" variant={'outline'} className="w-full">
-          Create Software
+        <Button type="submit" variant={"outline"} className="w-full">
+          {isloading ? "Creating..." : " Create Software"}
         </Button>
       </form>
     </div>

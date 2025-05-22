@@ -34,9 +34,9 @@ app.use(express.json())
 const StartServer=async()=>{
   try {
     await AppDataSource.initialize()
-    console.log("✅ Connected to NeonDB via TypeORM");
+    console.log(" Connected to NeonDB via TypeORM");
      app.listen(PORT, () => {
-       console.log(`🚀 Server running at http://localhost:${PORT}`);
+       console.log(` Server running at http://localhost:${PORT}`);
      });
   } catch (error) {
     console.log(error)

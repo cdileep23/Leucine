@@ -6,14 +6,11 @@ import { softwareEntity } from "../entities/software.entity";
 import { AuthenticatedRequest } from "../types/user.types";
 
 export class RequestController {
-  /**
-   * PATCH /api/requests/:id
-   * Admin/Manager approves or rejects a software access request
-   */
+
   static async UpdateRequest(req: AuthenticatedRequest, res: Response) {
     try {
       const { id } = req.params;
-      const { status } = req.body; // expected: "Approved" or "Rejected"
+      const { status } = req.body;
       const role = req.role;
 
       if (role !== "Admin" && role !== "Manager") {
@@ -67,10 +64,6 @@ export class RequestController {
     }
   }
 
-  /**
-   * GET /api/requests
-   * Admin/Manager view all pending requests
-   */
   static async getAllRequest(req: AuthenticatedRequest, res: Response) {
     try {
       const role = req.role;
@@ -107,10 +100,7 @@ export class RequestController {
     }
   }
 
-  /**
-   * POST /api/request
-   * Employee submits a new software access request
-   */
+ 
   static async postRequestAccess(req: AuthenticatedRequest, res: Response) {
     try {
       const { softwareId, reason, accessType } = req.body;
@@ -147,10 +137,29 @@ export class RequestController {
         });
       }
 
+
+      const existingApprovedRequest = await requestRepo.findOne({
+        where: {
+          user: { id: userId },
+          software: { id: softwareId },
+          accessType,
+          status: "Approved",
+        },
+      });
+
+      if (existingApprovedRequest) {
+        return res.status(409).json({
+          success: false,
+          error: "Access already approved for this software and access type",
+        });
+      }
+
+ 
       const existingRequest = await requestRepo.findOne({
         where: {
           user: { id: userId },
           software: { id: softwareId },
+          accessType,
           status: "Pending",
         },
       });
